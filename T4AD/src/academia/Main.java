@@ -11,7 +11,7 @@ import com.matisse.MtPackageObjectFactory;
 public class Main {
 	static String hostname = "localhost";
 	static String dbname = "academia"; 
-	static String base ="biblioteca1";
+	static String base ="Academia";
 
 
 	public static void main(String[] args) {
@@ -136,18 +136,17 @@ public class Main {
 		dbcon.open();
 		try {
 			Statement stmt = dbcon.createStatement();
-			String comando = "SELECT * FROM academia.PROFESORES";
+			String comando = "SELECT * FROM academia.PROFESORES;";
 			ResultSet rset = stmt.executeQuery(comando);
-			PROFESORES p1 = null;
+			PROFESORES p1;
 
 			while (rset.next()) {
 				p1 = (PROFESORES) rset.getObject(1);
-			}
-			System.out.println("Profesor: "+ String.format("%16s", p1.getNombre())
-			+String.format("%16s", p1.getApellidos())
-			+String.format("%16s", p1.getTelefono())
-			+String.format("%16s", p1.getDni())
-					);
+				System.out.println("Profesor: "+ String.format("%16s", p1.getNombre())
+				+String.format("%16s", p1.getApellidos())
+				+String.format("%16s", p1.getTelefono())
+				+String.format("%16s", p1.getDni()));
+			}	
 			// Cierra las conexiones
 			rset.close();
 			stmt.close();
