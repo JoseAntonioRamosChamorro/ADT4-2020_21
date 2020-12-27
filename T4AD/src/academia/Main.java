@@ -1,4 +1,5 @@
 package academia;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,14 +13,27 @@ public class Main {
 	static String hostname = "localhost";
 	static String dbname = "academia"; 
 	static String base ="Academia";
+	//datos profe
+	static String nombreprofe="Profe1";
+	static String apellidoProfe="Apellido1";
+	static int telefonoProfe=000000;
+	static String dmiProfe="1234123a";
 
-
+	//datos asignaturas
+	static String fechaAsig="Lunes";
+	static String nombreAsig="Lengua";
+	
+	//datos cursos
+	static String fechacurso="11/1/2021";
+	static String nombreCurso="Primero";
+	
 	public static void main(String[] args) {
+		System.out.println("Inicio");
 		agregar(hostname,dbname);
 		borrar(hostname,dbname);
 		modificar(hostname, dbname, "Profe1", "Apellido2");
 		consulta(hostname,dbname);
-
+		System.out.println("Fin");
 	}
 
 
@@ -35,15 +49,15 @@ public class Main {
 
 			//crear Profesor
 			PROFESORES p1 = new PROFESORES(db);
-			p1.setNombre("Profe1");
-			p1.setApellidos("Apellido1");
-			p1.setTelefono(000000);
-			p1.setDni("1234123a");
+			p1.setNombre(nombreprofe);
+			p1.setApellidos(apellidoProfe);
+			p1.setTelefono(telefonoProfe);
+			p1.setDni(dmiProfe);
 
 			//crear asignaturas
 			ASIGNATURAS as1 = new ASIGNATURAS(db);
-			as1.setFecha("Lunes");
-			as1.setNombre("Lengua");
+			as1.setFecha(fechaAsig);
+			as1.setNombre(nombreAsig);
 			as1.setAula(2);
 			as1.setDuracion(60);
 			as1.setHoraInicio(8);
@@ -51,8 +65,8 @@ public class Main {
 
 			//crear cursos
 			CURSOS cur1 = new CURSOS(db);
-			cur1.setFecha("11/1/2021");
-			cur1.setNombre("Primero");
+			cur1.setFecha(fechacurso);
+			cur1.setNombre(nombreCurso);
 			cur1.setAula(2);
 			cur1.setDuracion(60);
 			cur1.setHoraInicio(8);
@@ -132,25 +146,28 @@ public class Main {
 
 	public static void consulta(String hostname, String dbname) {
 		System.out.println("Iniciando Consulta");
+
 		MtDatabase dbcon = new MtDatabase(hostname, dbname);	
 		dbcon.open();
+		Connection con = dbcon.getJDBCConnection();
 		try {
-			Statement stmt = dbcon.createStatement();
-			String comando = "SELECT * FROM academia.PROFESORES;";
+			Statement stmt = con.createStatement();
+			String comando = "SELECT REF(o) FROM academia.PROFESORES o;";
 			ResultSet rset = stmt.executeQuery(comando);
 			PROFESORES p1;
-
+			int num = 1;
 			while (rset.next()) {
 				p1 = (PROFESORES) rset.getObject(1);
-				System.out.println("Profesor: "+ String.format("%16s", p1.getNombre())
+
+				System.out.println("Profesor "+num+": "+ String.format("%16s", p1.getNombre())
 				+String.format("%16s", p1.getApellidos())
 				+String.format("%16s", p1.getTelefono())
 				+String.format("%16s", p1.getDni()));
+				num=num+1;
 			}	
 			// Cierra las conexiones
 			rset.close();
 			stmt.close();
-			dbcon.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Error de consulta");
