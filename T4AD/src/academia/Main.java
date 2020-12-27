@@ -13,6 +13,7 @@ public class Main {
 	static String dbname = "academia"; 
 	static String base ="biblioteca1";
 
+
 	public static void main(String[] args) {
 		agregar(hostname,dbname);
 		borrar(hostname,dbname);
@@ -130,12 +131,13 @@ public class Main {
 	}
 
 	public static void consulta(String hostname, String dbname) {
+		System.out.println("Iniciando Consulta");
 		@SuppressWarnings("resource")
 		MtDatabase dbcon = new MtDatabase(hostname, dbname);	
 		dbcon.open();
 		try {
 			Statement stmt = dbcon.createStatement();
-			String comando = "SELECT * FROM academia1.PROFESORES";
+			String comando = "SELECT * FROM academia.PROFESORES";
 			ResultSet rset = stmt.executeQuery(comando);
 			PROFESORES p1 = null;
 
@@ -152,7 +154,9 @@ public class Main {
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Error de consulta");
 		}
+
 
 
 	}
