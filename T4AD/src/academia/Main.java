@@ -132,7 +132,6 @@ public class Main {
 
 	public static void consulta(String hostname, String dbname) {
 		System.out.println("Iniciando Consulta");
-		@SuppressWarnings("resource")
 		MtDatabase dbcon = new MtDatabase(hostname, dbname);	
 		dbcon.open();
 		try {
@@ -152,6 +151,7 @@ public class Main {
 			// Cierra las conexiones
 			rset.close();
 			stmt.close();
+			dbcon.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Error de consulta");
